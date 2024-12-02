@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Permitir acceso a archivos estáticos
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.(css|js|png|jpe?g|gif|ico)$ - [L,NC]
+
+# Excluir solicitudes POST de la reescritura
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^(index\.php)$ $1 [L]
+
+# Reescribir URLs para controladores y acciones
+RewriteRule ^login.php$ index.php?controller=login&action=showLoginForm [L,NC,QSA]
+RewriteRule ^register.php$ index.php?controller=register&action=showRegistrationForm [L,NC,QSA]
+RewriteRule ^logOut.php$ index.php?controller=auth&action=logout [L,NC,QSA]
+
+# Manejar error 404
+ErrorDocument 404 /comercial/views/404.php
