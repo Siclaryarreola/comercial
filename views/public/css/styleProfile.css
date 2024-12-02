@@ -1,0 +1,33 @@
+.body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Imagen de perfil */
+.card-img-top {
+    border: 3px solid #343a40;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Bot¨®n */
+.btn-primary {
+    background-color: #343a40;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2c3136;
+}
+
+/* Centrado */
+.row.justify-content-center {
+    display: flex;
+    justify-content: center;
+}
+ .profile-container {
+            margin-top: 1rem; /* Ajustar margen superior */
+        }
