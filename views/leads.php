@@ -3,9 +3,13 @@ $activePage = 'leads';
 include('components/header.php'); 
 require_once('../controllers/leadsController.php');
 
+// Instancia del controlador y carga de datos
 $leadsController = new LeadsController();
 $leads = $leadsController->index();
 $dropdownData = $leadsController->getDropdownData();
+
+// Verificar el rol del usuario
+$usuarioRol = $_SESSION['user']['rol'] ?? 'usuario'; // Aseg®≤rate de que $_SESSION['user']['rol'] tenga el valor correcto
 ?>
 
 <!-- Incluir CSS de DataTables y Bootstrap -->
@@ -20,7 +24,12 @@ $dropdownData = $leadsController->getDropdownData();
 <main class="container-fluid mt-5">
     <h1>Leads</h1>
     <div class="mb-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addLeadModal">Agregar nuevo lead</button>
+        <!-- Bot®Æn para agregar o editar leads dependiendo del rol -->
+        <?php if ($usuarioRol === 'usuario'): ?>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addLeadModal">Agregar nuevo lead</button>
+        <?php elseif ($usuarioRol === 'gerente'): ?>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#editLeadModal">Editar leads</button>
+        <?php endif; ?>
     </div>
 
     <table class="table table-striped" id="leadsTable">
@@ -59,9 +68,20 @@ $dropdownData = $leadsController->getDropdownData();
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="viewLead.php?id=<?= $lead['id'] ?>" class="btn btn-info btn-sm">Detalle</a>
-                        <a href="editLead.php?id=<?= $lead['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="deleteLead.php?id=<?= $lead['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Seguro que desea eliminar?');">Eliminar</a>
+                        <?php if ($usuarioRol === 'usuario'): ?>
+                            <a href="viewLead.php?id=<?= $lead['id'] ?>" class="btn btn-info btn-sm">Detalle</a>
+                            <a href="editLead.php?id=<?= $lead['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="deleteLead.php?id=<?= $lead['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Seguro que desea eliminar?');">Eliminar</a>
+                        <?php elseif ($usuarioRol === 'gerente'): ?>
+                            <?php if ($lead['estatus'] !== 'Completado'): ?>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#completeLeadModal" 
+                                    onclick="fillCompleteLeadModal(<?= htmlspecialchars(json_encode($lead)) ?>)">
+                                    Completar
+                                </button>
+                            <?php else: ?>
+                                <button class="btn btn-success btn-sm" disabled>Lead Completo</button>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -80,88 +100,7 @@ $dropdownData = $leadsController->getDropdownData();
             <div class="modal-body">
                 <form id="addLeadForm" action="../controllers/leadsController.php?action=addLead" method="POST" enctype="multipart/form-data">
                     <div class="row">
-                        <!-- Columna 1 -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="empresa">Empresa</label>
-                                <input type="text" class="form-control" id="empresa" name="empresa" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="localidad">Localidad</label>
-                                <input type="text" class="form-control" id="localidad" name="localidad">
-                            </div>
-                            <div class="form-group">
-                                <label for="giro">Giro</label>
-                                <input type="text" class="form-control" id="giro" name="giro">
-                            </div>
-                            <div class="form-group">
-                                <label for="sucursal">Sucursal</label>
-                                <select class="form-control" id="sucursal" name="sucursal" required>
-                                    <option value="" selected>Seleccionar</option>
-                                    <?php foreach ($dropdownData['sucursales'] as $sucursal): ?>
-                                        <option value="<?= htmlspecialchars($sucursal['id']) ?>"><?= htmlspecialchars($sucursal['sucursal']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- Columna 2 -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="contacto">Contacto</label>
-                                <input type="text" class="form-control" id="contacto" name="contacto">
-                            </div>
-                            <div class="form-group">
-                                <label for="telefono">Tel√©fono</label>
-                                <input type="text" class="form-control" id="telefono" name="telefono">
-                            </div>
-                            <div class="form-group">
-                                <label for="correo">Correo</label>
-                                <input type="email" class="form-control" id="correo" name="correo">
-                            </div>
-                            <div class="form-group">
-                                <label for="medio_contacto">Medio de Contacto</label>
-                                <select class="form-control" id="medio_contacto" name="medio_contacto" required>
-                                    <option value="" selected>Seleccionar</option>
-                                    <?php foreach ($dropdownData['contactos'] as $contacto): ?>
-                                        <option value="<?= htmlspecialchars($contacto['id_contacto']) ?>"><?= htmlspecialchars($contacto['contacto']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- Columna 3 -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="fecha_prospeccion">Fecha de Prospecci√≥n</label>
-                                <input type="date" class="form-control" id="fecha_prospeccion" name="fecha_prospeccion">
-                            </div>
-                            <div class="form-group">
-                                <label for="periodo">Periodo</label>
-                                <select class="form-control" id="periodo" name="periodo" required>
-                                    <option value="" selected>Seleccionar</option>
-                                    <?php foreach ($dropdownData['periodos'] as $periodo): ?>
-                                        <option value="<?= htmlspecialchars($periodo['id_periodo']) ?>"><?= htmlspecialchars($periodo['periodo']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="gerente">Gerente Responsable</label>
-                                <select class="form-control" id="gerente" name="gerente" required>
-                                    <option value="" selected>Seleccionar</option>
-                                    <?php foreach ($dropdownData['gerentes'] as $gerente): ?>
-                                        <option value="<?= htmlspecialchars($gerente['id_gerente']) ?>"><?= htmlspecialchars($gerente['gerente']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="estatus">Estatus</label>
-                                <select class="form-control" id="estatus" name="estatus" required>
-                                    <option value="" selected>Seleccionar</option>
-                                    <?php foreach ($dropdownData['estatus'] as $estatus): ?>
-                                        <option value="<?= htmlspecialchars($estatus['id_estatus']) ?>"><?= htmlspecialchars($estatus['estatus']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
+                        <!-- Campos del formulario -->
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Guardar</button>
                 </form>
@@ -170,9 +109,66 @@ $dropdownData = $leadsController->getDropdownData();
     </div>
 </div>
 
+<!-- Modal para Editar Lead -->
+<div class="modal fade" id="editLeadModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Lead</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editLeadForm" action="../controllers/leadsController.php?action=editLead" method="POST">
+                    <div class="form-group">
+                        <label for="editLeadSelect">Selecciona un Lead:</label>
+                        <select class="form-control" id="editLeadSelect" name="lead_id">
+                            <?php foreach ($leads as $lead): ?>
+                                <option value="<?= $lead['id'] ?>"><?= $lead['empresa'] ?> - <?= $lead['localidad'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-block">Editar Lead</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Completar Lead -->
+<div class="modal fade" id="completeLeadModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Completar Lead</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="completeLeadForm" action="../controllers/leadsController.php?action=completeLead" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="completeLeadId" name="id">
+                    <div class="form-group">
+                        <label for="cotizacion">Cotizaci®Æn</label>
+                        <input type="text" class="form-control" id="cotizacion" name="cotizacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="archivo">Archivo</label>
+                        <input type="file" class="form-control" id="archivo" name="archivo">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Completar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-$(document).ready(function() {
-    $('#leadsTable').DataTable();
-});
+    function fillCompleteLeadModal(lead) {
+        document.getElementById('completeLeadId').value = lead.id;
+        document.getElementById('cotizacion').value = lead.cotizacion || '';
+    }
+
+    $(document).ready(function() {
+        $('#leadsTable').DataTable();
+    });
 </script>
+
 <?php include('components/footer.php'); ?>

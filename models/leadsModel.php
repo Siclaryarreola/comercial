@@ -115,7 +115,7 @@ class LeadModel {
                 $data['giro'],
                 $data['localidad'],
                 $data['sucursal'],
-                $data['usuario_id']
+                $data['id_usuario']
             );
 
             if (!$stmtCliente->execute()) {
@@ -137,7 +137,7 @@ class LeadModel {
             $stmtLead->bind_param(
                 "iissssssiii",
                 $idCliente,
-                $data['usuario_id'],
+                $data['id_usuario'],
                 $data['medio_contacto'],
                 $data['estatus'],
                 $data['cotizacion'],
@@ -146,7 +146,7 @@ class LeadModel {
                 $data['archivo'],
                 $data['periodo'],
                 $data['gerente_responsable'],
-                $data['id_sucursal']
+                $data['sucursal']
             );
 
             if (!$stmtLead->execute()) {

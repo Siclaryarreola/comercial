@@ -1,7 +1,7 @@
 <?php
 $activePage = 'users';
 require_once('components/header.php');
-require_once ('../controllers/userController.php');
+require_once('../controllers/userController.php');
 
 // Instancia del modelo y obtención de datos
 $userModel = new userModel();
@@ -33,47 +33,50 @@ if ($_SESSION['user']['rol'] != $rolPermitido) {
         </div>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Nombre de Usuario</th>
-                <th>Correo Electrónico</th>
-                <th>Puesto</th>
-                <th>Sucursal</th>
-                <th>Estado</th>
-                <th>Último Acceso</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($usuarios)): ?>
-                <?php foreach ($usuarios as $usuario): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($usuario['nombre']); ?></td>
-                        <td><?= htmlspecialchars($usuario['correo']); ?></td>
-                        <td><?= htmlspecialchars($usuario['puesto']); ?></td>
-                        <td><?= htmlspecialchars($usuario['sucursal']); ?></td>
-                        <td><?= $usuario['estado'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
-                        <td><?= htmlspecialchars($usuario['ultimo_acceso'] ?? 'No registrado'); ?></td>
-                        <td>
-                            <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editUserModal"
-                                onclick="fillEditModal(
-                                    <?= htmlspecialchars(json_encode($usuario)); ?>
-                                )">Editar</button>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger"
-                               onclick="confirmDeleteUser('../controllers/userController.php?action=deleteUser&id=<?= $usuario['id']; ?>')">
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
+    <!-- Contenedor de la tabla con encabezados fijos -->
+    <div class="table-responsive" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+        <table class="table table-bordered table-striped">
+            <thead style="position: sticky; top: 0; background-color: #fff; z-index: 1;">
                 <tr>
-                    <td colspan="7">No se encontraron usuarios.</td>
+                    <th>Nombre de Usuario</th>
+                    <th>Correo Electrónico</th>
+                    <th>Puesto</th>
+                    <th>Sucursal</th>
+                    <th>Estado</th>
+                    <th>Último Acceso</th>
+                    <th>Acciones</th>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php if (!empty($usuarios)): ?>
+                    <?php foreach ($usuarios as $usuario): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($usuario['nombre']); ?></td>
+                            <td><?= htmlspecialchars($usuario['correo']); ?></td>
+                            <td><?= htmlspecialchars($usuario['puesto']); ?></td>
+                            <td><?= htmlspecialchars($usuario['sucursal']); ?></td>
+                            <td><?= $usuario['estado'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
+                            <td><?= htmlspecialchars($usuario['ultimo_acceso'] ?? 'No registrado'); ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editUserModal"
+                                    onclick="fillEditModal(
+                                        <?= htmlspecialchars(json_encode($usuario)); ?>
+                                    )">Editar</button>
+                                <a href="javascript:void(0);" class="btn btn-sm btn-danger"
+                                   onclick="confirmDeleteUser('../controllers/userController.php?action=deleteUser&id=<?= $usuario['id_usuario']; ?>')">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="7">No se encontraron usuarios.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 <?php include('components/footer.php'); ?>

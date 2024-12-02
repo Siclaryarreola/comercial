@@ -12,7 +12,21 @@ class UserModel
 
     public function getUsuarios() 
     {
-        $query = "SELECT * FROM usuarios";
+        // Modificamos la consulta para incluir los JOIN con las tablas de puestos y sucursales
+        $query = "
+            SELECT 
+                u.id_usuarios, 
+                u.nombre, 
+                u.correo, 
+                u.rol, 
+                u.estado, 
+                u.ultimo_acceso, 
+                p.puesto , 
+                s.sucursal 
+            FROM usuarios u
+            LEFT JOIN puestos p ON u.puesto = p.id_puesto
+            LEFT JOIN sucursales s ON u.sucursal = s.id
+        ";
         $result = $this->db->query($query);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }

@@ -1,40 +1,61 @@
-[02-Dec-2024 00:14:00 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/controllers/userController.php:15
-Stack trace:
-#0 /home4/intran23/public_html/comercial/controllers/userController.php(117): UserController->__construct()
-#1 /home4/intran23/public_html/comercial/views/userManagement.php(4): require_once('/home4/intran23...')
-#2 {main}
-  thrown in /home4/intran23/public_html/comercial/controllers/userController.php on line 15
-[02-Dec-2024 00:14:36 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/controllers/userController.php:15
-Stack trace:
-#0 /home4/intran23/public_html/comercial/controllers/userController.php(117): UserController->__construct()
-#1 /home4/intran23/public_html/comercial/views/userManagement.php(4): require_once('/home4/intran23...')
-#2 {main}
-  thrown in /home4/intran23/public_html/comercial/controllers/userController.php on line 15
-[02-Dec-2024 00:15:36 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/controllers/userController.php:10
-Stack trace:
-#0 /home4/intran23/public_html/comercial/controllers/userController.php(116): UserController->__construct()
-#1 /home4/intran23/public_html/comercial/views/userManagement.php(4): require_once('/home4/intran23...')
-#2 {main}
-  thrown in /home4/intran23/public_html/comercial/controllers/userController.php on line 10
-[02-Dec-2024 00:17:23 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/views/userManagement.php:7
-Stack trace:
-#0 {main}
-  thrown in /home4/intran23/public_html/comercial/views/userManagement.php on line 7
-[02-Dec-2024 00:17:32 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/views/userManagement.php:7
-Stack trace:
-#0 {main}
-  thrown in /home4/intran23/public_html/comercial/views/userManagement.php on line 7
-[02-Dec-2024 00:20:09 America/Mexico_City] PHP Fatal error:  Uncaught Error: Class "userModel" not found in /home4/intran23/public_html/comercial/controllers/userController.php:10
-Stack trace:
-#0 /home4/intran23/public_html/comercial/controllers/userController.php(116): UserController->__construct()
-#1 /home4/intran23/public_html/comercial/views/userManagement.php(4): require_once('/home4/intran23...')
-#2 {main}
-  thrown in /home4/intran23/public_html/comercial/controllers/userController.php on line 10
-[02-Dec-2024 00:26:06 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:26:06 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:26:06 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:26:06 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:27:18 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:27:18 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:27:18 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
-[02-Dec-2024 00:27:18 America/Mexico_City] PHP Warning:  Undefined array key "id" in /home4/intran23/public_html/comercial/views/userManagement.php on line 64
+[02-Dec-2024 02:44:52 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:44:52 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:44:52 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:44:52 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:44:52 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:08 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:08 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:08 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:08 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:08 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:37 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:37 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:37 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:37 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:47:37 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 65
+[02-Dec-2024 02:55:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:55:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:55:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:55:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:55:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:57:51 America/Mexico_City] PHP Warning:  Undefined array key "contacto" in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 02:57:51 America/Mexico_City] PHP Warning:  foreach() argument must be of type array|object, null given in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 02:57:53 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:57:53 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:57:53 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:57:53 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:57:53 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 02:58:38 America/Mexico_City] PHP Warning:  Undefined array key "contacto" in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 02:58:38 America/Mexico_City] PHP Warning:  foreach() argument must be of type array|object, null given in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 03:01:45 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:45 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:45 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:45 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:45 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:49 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:49 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:49 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:49 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:01:49 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 67
+[02-Dec-2024 03:04:41 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:04:41 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:04:41 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:04:41 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:04:41 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:08:28 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:08:28 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:08:28 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:08:28 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:08:28 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:19 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:19 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:19 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:19 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:19 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:11:43 America/Mexico_City] PHP Warning:  Undefined array key "contacto" in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 03:11:43 America/Mexico_City] PHP Warning:  foreach() argument must be of type array|object, null given in /home4/intran23/public_html/comercial/views/leadsManagement.php on line 82
+[02-Dec-2024 03:13:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:13:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:13:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:13:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66
+[02-Dec-2024 03:13:46 America/Mexico_City] PHP Warning:  Undefined array key "id_usuario" in /home4/intran23/public_html/comercial/views/userManagement.php on line 66

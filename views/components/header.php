@@ -5,7 +5,7 @@ require_once('../controllers/sessionManager.php');
 SessionManager::initSession();
 SessionManager::authenticate();
 
-$user = $_SESSION['user'] ?? ['nombre' => 'Invitado'];
+$user = $_SESSION['user'] ?? ['nombre' => 'Invitado', 'rol' => 0]; // Valor predeterminado para evitar errores
 ?>
 
 <!DOCTYPE html>
@@ -35,34 +35,55 @@ $user = $_SESSION['user'] ?? ['nombre' => 'Invitado'];
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
+                <!-- Todos los roles tienen acceso a Inicio -->
                 <li class="nav-item <?php echo ($activePage == 'dashboard') ? 'active' : ''; ?>">
                     <a class="nav-link" href="../views/dashboard.php">Inicio</a>
                 </li>
+
+                <!-- Administrador (rol 1) tiene acceso a todo -->
                 <?php if ($user['rol'] == 1): ?>
-                <li class="nav-item <?php echo ($activePage == 'users') ? 'active' : ''; ?>">
-                    <a class="nav-link" href="../views/userManagement.php">Usuarios</a>
-                </li>
+                    <li class="nav-item <?php echo ($activePage == 'users') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/userManagement.php">Usuarios</a>
+                    </li>
+                    <li class="nav-item <?php echo ($activePage == 'leads') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/leads.php">Leads</a>
+                    </li>
+                    <li class="nav-item <?php echo ($activePage == 'leadsManagement') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/leadsManagement.php">Gestión de Leads</a>
+                    </li>
+                    <li class="nav-item <?php echo ($activePage == 'graphics') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/graphics.php">Gráficos</a>
+                    </li>
                 <?php endif; ?>
-                
-                <li class="nav-item <?php echo ($activePage == 'leads') ? 'active' : ''; ?>">
-                    <a class="nav-link" href="../views/leads.php">Leads</a>
-                </li>
-                
-                  <li class="nav-item <?php echo ($activePage == 'leadsManagement') ? 'active' : ''; ?>">
-                    <a class="nav-link" href="../views/leadsManagement.php">Gestión de Leads</a>
-                </li>
-                
-                  <li class="nav-item <?php echo ($activePage == 'graphics') ? 'active' : ''; ?>">
-                    <a class="nav-link" href="../views/graphics.php">Gráficos</a>
-                </li>
-                
+
+                <!-- Gerente (rol 2) tiene acceso a Inicio, Leads, Gestión de Leads, y Gráficos -->
+                <?php if ($user['rol'] == 2): ?>
+                    <li class="nav-item <?php echo ($activePage == 'leads') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/leads.php">Leads</a>
+                    </li>
+                    <li class="nav-item <?php echo ($activePage == 'leadsManagement') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/leadsManagement.php">Gestión de Leads</a>
+                    </li>
+                    <li class="nav-item <?php echo ($activePage == 'graphics') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/graphics.php">Gráficos</a>
+                    </li>
+                <?php endif; ?>
+
+                <!-- Usuario regular (rol 0) tiene acceso a Inicio y Leads -->
+                <?php if ($user['rol'] == 0): ?>
+                    <li class="nav-item <?php echo ($activePage == 'leads') ? 'active' : ''; ?>">
+                        <a class="nav-link" href="../views/leads.php">Leads</a>
+                    </li>
+                <?php endif; ?>
+
+                <!-- Menú desplegable para todos los roles -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Bienvenido, <?php echo htmlspecialchars($user['nombre']); ?>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="../views/profile.php">Mi Perfil</a>
-                        <a class="dropdown-item" href="../controllers/logOut.php" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar  Sesión</a>
+                        <a class="dropdown-item" href="../controllers/logOut.php" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
                     </div>
                 </li>
             </ul>
