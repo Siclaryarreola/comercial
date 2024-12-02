@@ -21,15 +21,77 @@ $contactData = ['WhatsApp' => 58.3, 'Teléfono' => 20.8, 'Correo' => 16.7];
 <main class="container-fluid mt-4">
     <h1 class="text-center">REPORTE GENERACIÓN DE DEMANDA 2024</h1>
 
-    <!-- Filtros -->
-    <div class="d-flex justify-content-between align-items-center my-4">
-        <button class="btn btn-primary btn-sm">Selecciona un periodo</button>
-        <button class="btn btn-secondary btn-sm">Sucursal</button>
-        <button class="btn btn-secondary btn-sm">Línea de Negocio</button>
-    </div>
-
+    <!-- Contenedor Principal de Filtros y Gráficas -->
     <div class="row">
-        <!-- Contenedor Izquierdo: Información detallada -->
+        <!-- Contenedor de Filtros y Gráficas -->
+        <div class="col-md-4">
+            <!-- Contenedor de Filtros -->
+            <div class="card mb-3">
+                <div class="card-body filters-container">
+                    <h5 class="text-center">Filtros</h5>
+                    <div class="row filters-group">
+                        <div class="col-md-6 mb-3">
+                            <label for="generador">Generador de Demanda</label>
+                            <select id="generador" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($generadores as $generador): ?>
+                                    <option value="<?= $generador['id_usuarios']; ?>"><?= htmlspecialchars($generador['nombre']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="periodo">Periodo</label>
+                            <select id="periodo" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($periodos as $periodo): ?>
+                                    <option value="<?= $periodo['id_periodo']; ?>"><?= htmlspecialchars($periodo['periodo']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sucursal">Sucursal</label>
+                            <select id="sucursal" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($sucursales as $sucursal): ?>
+                                    <option value="<?= $sucursal['id_sucursales']; ?>"><?= htmlspecialchars($sucursal['sucursal']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lineaNegocio">Línea de Negocio</label>
+                            <select id="lineaNegocio" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <option value="MPS">MPS</option>
+                                <option value="Etiquetado y Codificado">Etiquetado y Codificado</option>
+                                <option value="Tecnología">Tecnología</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficas -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="text-center">Principales Sucursales</h5>
+                            <canvas id="branchChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="text-center">Medios de Contacto</h5>
+                            <canvas id="contactChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor de Información Detallada -->
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
@@ -63,28 +125,6 @@ $contactData = ['WhatsApp' => 58.3, 'Teléfono' => 20.8, 'Correo' => 16.7];
                 </div>
             </div>
         </div>
-
-        <!-- Contenedor Derecho: Gráficos -->
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="text-center">Principales Sucursales</h5>
-                            <canvas id="branchChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="text-center">Medios de Contacto</h5>
-                            <canvas id="contactChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 
@@ -96,7 +136,7 @@ $contactData = ['WhatsApp' => 58.3, 'Teléfono' => 20.8, 'Correo' => 16.7];
         data: {
             labels: <?= json_encode(array_keys($branchData)); ?>,
             datasets: [{
-                label: 'Porcentaje',
+                label: 'Queretaro',
                 data: <?= json_encode(array_values($branchData)); ?>,
                 backgroundColor: ['#4CAF50', '#FF9800', '#F44336', '#2196F3']
             }]

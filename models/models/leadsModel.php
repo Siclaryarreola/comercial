@@ -82,7 +82,7 @@ class LeadModel {
     }
 
     public function getSucursales() {
-        $query = "SELECT id, sucursal FROM sucursales";
+        $query = "SELECT id_sucursales, sucursal FROM sucursales";
         $result = $this->db->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
