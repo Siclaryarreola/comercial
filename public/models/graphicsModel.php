@@ -16,7 +16,7 @@ class GraphicsModel {
     }
 
     public function getSucursales() {
-        $query = "SELECT id, sucursal FROM sucursales";
+        $query = "SELECT id_sucursales, sucursal FROM sucursales";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -65,24 +65,23 @@ class GraphicsModel {
     }
     
     public function getLeadsDetalle() {
-    $query = "
-        SELECT 
-            leads.fecha_generacion AS fecha,
-            sucursales.sucursal AS sucursal,
-            clientesleads.empresa AS empresa,
-            estatusleads.estatus AS estatus,
-            negocioleads.negocio AS linea_negocio,
-            leads.notas AS comentarios
-        FROM leads
-        INNER JOIN sucursales ON leads.id_sucursal = sucursales.id
-        INNER JOIN clientesleads ON leads.id_cliente = clientesleads.id
-        INNER JOIN estatusleads ON leads.estatus = estatusleads.id_estatus
-        INNER JOIN negocioleads ON leads.linea_negocio = negocioleads.id_negocio
-    ";
-    $stmt = $this->db->prepare($query);
-    $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-}
-
+        $query = "
+            SELECT 
+                leads.fecha_generacion AS fecha,
+                sucursales.sucursal AS sucursal,
+                clientesleads.empresa AS empresa,
+                estatusleads.estatus AS estatus,
+                negocioleads.negocio AS linea_negocio,
+                leads.notas AS comentarios
+            FROM leads
+            INNER JOIN sucursales ON leads.id_sucursal = sucursales.id_sucursales
+            INNER JOIN clientesleads ON leads.id_cliente = clientesleads.id
+            INNER JOIN estatusleads ON leads.estatus = estatusleads.id_estatus
+            INNER JOIN negocioleads ON leads.linea_negocio = negocioleads.id_negocio
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }
 ?>

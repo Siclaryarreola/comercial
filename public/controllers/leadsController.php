@@ -43,8 +43,35 @@ class LeadsController {
         }
     }
 
+    public function completeLead() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            $cotizacion = $_POST['cotizacion'] ?? null;
+            $archivo = $_FILES['archivo']['name'] ?? null;
+
+            if ($archivo) {
+                $uploadDir = '../Leads/';
+                $filePath = $uploadDir . basename($archivo);
+                move_uploaded_file($_FILES['archivo']['tmp_name'], $filePath);
+            }
+
+            $data = [
+                'id' => $id,
+                'cotizacion' => $cotizacion,
+                'archivo' => $archivo
+            ];
+
+            $result = $this->model->completeLead($data);
+
+            if ($result) {
+                header("Location: ../views/leads.php?success=2");
+            } else {
+                header("Location: ../views/leads.php?error=2");
+            }
+        }
+    }
+
     public function getDropdownData() {
-        // Este m¨¦todo obtiene los datos necesarios para los desplegables en la vista
         return [
             'contactos' => $this->model->getContactos(),
             'periodos' => $this->model->getPeriodos(),
@@ -57,8 +84,13 @@ class LeadsController {
 }
 
 // Manejo de acciones
-if (isset($_GET['action']) && $_GET['action'] === 'addLead') {
+if (isset($_GET['action'])) {
     $controller = new LeadsController();
-    $controller->addLead();
+
+    if ($_GET['action'] === 'addLead') {
+        $controller->addLead();
+    } elseif ($_GET['action'] === 'completeLead') {
+        $controller->completeLead();
+    }
 }
 ?>

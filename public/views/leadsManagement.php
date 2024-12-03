@@ -5,6 +5,12 @@ require_once('../controllers/leadsController.php');
 
 $leadsController = new LeadsController();
 $dropdownData = $leadsController->getDropdownData();
+
+// Verificar si la clave 'contacto' está definida en $dropdownData
+$contactos = isset($dropdownData['contacto']) ? $dropdownData['contacto'] : [];
+$estatus = isset($dropdownData['estatus']) ? $dropdownData['estatus'] : [];
+$gerentes = isset($dropdownData['gerentes']) ? $dropdownData['gerentes'] : [];
+$periodos = isset($dropdownData['periodos']) ? $dropdownData['periodos'] : [];
 ?>
 
 <link rel="stylesheet" href="../public/css/styleleadsManagement.css">

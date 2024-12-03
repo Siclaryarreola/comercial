@@ -1,7 +1,6 @@
 <?php
 require_once('../models/graphicsModel.php');
 
-
 class GraphicsController {
     private $graphicsModel;
 
@@ -9,7 +8,7 @@ class GraphicsController {
         $this->graphicsModel = new GraphicsModel();
     }
 
-    public function getGeneradores() {
+    public function getGeneradoresDemanda() {
         return $this->graphicsModel->getGeneradoresDemanda();
     }
 
@@ -34,9 +33,7 @@ class GraphicsController {
     }
 
     public function getLeadsDetalle() {
-        // Nuevo método para obtener detalles de los leads
         return $this->graphicsModel->getLeadsDetalle();
     }
 }
-
 ?>

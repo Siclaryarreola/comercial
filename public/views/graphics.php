@@ -1,195 +1,231 @@
-<?php 
+<?php
 $activePage = 'graphics';
 include('components/header.php');
 require_once('../controllers/graphicsController.php');
 
-$controller = new GraphicsController();
+// Instancia del controlador y obtención de datos
+$graphicsController = new GraphicsController();
+$generadores = $graphicsController->getGeneradoresDemanda();
+$sucursales = $graphicsController->getSucursales();
+$periodos = $graphicsController->getPeriodos();
+$mediosContacto = $graphicsController->getMediosDeContacto();
+$etapasLeads = $graphicsController->getEtapasLeads();
+$conversionLeads = $graphicsController->getConversionLeads();
+$leads = $graphicsController->getLeadsDetalle();
 
-// Obtener datos dinámicos desde la base de datos
-$generadores = $controller->getGeneradores();
-$sucursales = $controller->getSucursales();
-$periodos = $controller->getPeriodos();
-$medios = $controller->getMediosDeContacto();
+// Datos para gráficos
+$branchData = ['Querétaro' => 67.13, 'Cd. Juárez' => 11.19, 'Puebla' => 10.51];
+$contactData = ['WhatsApp' => 58.3, 'Teléfono' => 20.8, 'Correo' => 16.7];
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Generación de Demanda <?= date('Y') ?></title>
-    <link rel="stylesheet" href="../public/css/styleGraphics.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
 
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<main class="container-fluid mt-4">
+    <h1 class="text-center">REPORTE GENERACIÓN DE DEMANDA 2024</h1>
 
-        h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .dashboard-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .left-container, .right-container {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .dropdown-container-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown-container h4 {
-            margin-bottom: 5px;
-        }
-
-        .dropdown-container select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .charts-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .chart-wrapper {
-            flex: 1;
-            min-width: 300px;
-            padding: 10px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .chart-wrapper canvas {
-            max-width: 100%;
-            height: 250px;
-        }
-    </style>
-</head>
-<body>
-    <div class="main-container">
-        <h3 class="text-center">Reporte Generación de Demanda <?= date('Y') ?></h3>
-        
-        <div class="dashboard-container">
-            <!-- Contenedor izquierdo -->
-            <div class="left-container">
-                <div class="dropdown-container-group">
-                    <div class="dropdown-container">
-                        <h4>Generador de Demanda</h4>
-                        <select>
-                            <option>Seleccionar Generador</option>
-                            <?php foreach ($generadores as $generador): ?>
-                                <option value="<?= $generador['id_usuarios'] ?>"><?= htmlspecialchars($generador['nombre']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="dropdown-container">
-                        <h4>Periodos</h4>
-                        <select>
-                            <option>Seleccionar Periodo</option>
-                            <?php foreach ($periodos as $periodo): ?>
-                                <option value="<?= $periodo['id_periodo'] ?>"><?= htmlspecialchars($periodo['periodo']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="dropdown-container">
-                        <h4>Sucursales</h4>
-                        <select>
-                            <option>Seleccionar Sucursal</option>
-                            <?php foreach ($sucursales as $sucursal): ?>
-                                <option value="<?= $sucursal['id'] ?>"><?= htmlspecialchars($sucursal['sucursal']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="dropdown-container">
-                        <h4>Medios de Contacto</h4>
-                        <select>
-                            <option>Seleccionar Medio</option>
-                            <?php foreach ($medios as $medio): ?>
-                                <option value="<?= $medio['id_contacto'] ?>"><?= htmlspecialchars($medio['contacto']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+    <!-- Contenedor Principal de Filtros y Gráficas -->
+    <div class="row">
+        <!-- Contenedor de Filtros y Gráficas -->
+        <div class="col-md-4">
+            <!-- Contenedor de Filtros -->
+            <div class="card mb-3">
+                <div class="card-body filters-container">
+                    <h5 class="text-center">Filtros</h5>
+                    <div class="row filters-group">
+                        <div class="col-md-6 mb-3">
+                            <label for="generador">Generador de Demanda</label>
+                            <select id="generador" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($generadores as $generador): ?>
+                                    <option value="<?= $generador['id_usuarios']; ?>"><?= htmlspecialchars($generador['nombre']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="periodo">Periodo</label>
+                            <select id="periodo" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($periodos as $periodo): ?>
+                                    <option value="<?= $periodo['id_periodo']; ?>"><?= htmlspecialchars($periodo['periodo']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sucursal">Sucursal</label>
+                            <select id="sucursal" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <?php foreach ($sucursales as $sucursal): ?>
+                                    <option value="<?= $sucursal['id_sucursales']; ?>"><?= htmlspecialchars($sucursal['sucursal']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lineaNegocio">Línea de Negocio</label>
+                            <select id="lineaNegocio" class="form-control">
+                                <option value="" selected>Seleccionar</option>
+                                <option value="MPS">MPS</option>
+                                <option value="Etiquetado y Codificado">Etiquetado y Codificado</option>
+                                <option value="Tecnología">Tecnología</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenedor derecho -->
-            <div class="right-container">
-                <div class="charts-container">
-                    <div class="chart-wrapper">
-                        <h4>Sucursales con Más Leads</h4>
-                        <canvas id="chartSucursales"></canvas>
+            <!-- Gráficas -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="text-center">Principales Sucursales</h5>
+                            <canvas id="branchChart"></canvas>
+                        </div>
                     </div>
-                    <div class="chart-wrapper">
-                        <h4>Leads por Medio de Contacto</h4>
-                        <canvas id="chartMedios"></canvas>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="text-center">Medios de Contacto</h5>
+                            <canvas id="contactChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <!-- Contenedor de Información Detallada -->
+        <div class="col-md-8">
+            <div class="row">
+    <!-- Conversión de Leads -->
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm p-3">
+            <h4 class="text-center text-primary">CONVERSIÓN DE LEADS</h4>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <p><span class="emoji">👥</span> LEADS TOTALES</p>
+                    <h4><?= htmlspecialchars($conversionData['totalLeads'] ?? 0) ?></h4>
+                </div>
+                <div class="col-md-3">
+                    <p><span class="emoji">💰</span> TOTAL COTIZADO</p>
+                    <h4>$<?= number_format($conversionData['totalCotizado'] ?? 0, 2) ?></h4>
+                </div>
+                <div class="col-md-3">
+                    <p><span class="emoji">📈</span> VENTAS TOTALES</p>
+                    <h4>$<?= number_format($conversionData['ventasTotales'] ?? 0, 2) ?></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $conversionData['ventasPorcentaje'] ?? 0 ?>%;" aria-valuenow="<?= $conversionData['ventasPorcentaje'] ?? 0 ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p><span class="emoji">❌</span> TOTAL PERDIDO</p>
+                    <h4>$<?= number_format($conversionData['totalPerdido'] ?? 0, 2) ?></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $conversionData['perdidoPorcentaje'] ?? 0 ?>%;" aria-valuenow="<?= $conversionData['perdidoPorcentaje'] ?? 0 ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Gráfica de sucursales
-        const ctxSucursales = document.getElementById('chartSucursales').getContext('2d');
-        new Chart(ctxSucursales, {
-            type: 'doughnut',
-            data: {
-                labels: <?= json_encode(array_column($sucursales, 'sucursal')) ?>,
-                datasets: [{
-                    data: [<?= implode(',', array_column($sucursales, 'conteo')) ?>], // Sustituye con datos dinámicos
-                    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+    <!-- Etapas de Leads -->
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm p-3">
+            <h4 class="text-center text-success">ETAPAS DE LEADS</h4>
+            <div class="row text-center">
+                <?php foreach ($etapasData as $etapa): ?>
+                    <div class="col-md-2">
+                        <p><?= htmlspecialchars($etapa['nombre']) ?></p>
+                        <h4><?= htmlspecialchars($etapa['cantidad']) ?></h4>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
-        // Gráfica de medios de contacto
-        const ctxMedios = document.getElementById('chartMedios').getContext('2d');
-        new Chart(ctxMedios, {
-            type: 'pie',
-            data: {
-                labels: <?= json_encode(array_column($medios, 'contacto')) ?>,
-                datasets: [{
-                    data: [<?= implode(',', array_column($medios, 'conteo')) ?>], // Sustituye con datos dinámicos
-                    backgroundColor: ['#ffce56', '#4bc0c0', '#ff6384']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    </script>
-</body>
-</html>
+    <!-- Desempeño del Lead -->
+    <div class="col-md-12">
+        <div class="card shadow-sm p-3">
+            <h4 class="text-center text-secondary">DESEMPEÑO DEL LEAD</h4>
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <p><span class="emoji">⭐</span> TASA DE EFECTIVIDAD (Promedio del 20%)</p>
+                    <h4><?= number_format($conversionData['tasaEfectividad'] ?? 0, 2) ?>%</h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $conversionData['tasaEfectividad'] ?? 0 ?>%;" aria-valuenow="<?= $conversionData['tasaEfectividad'] ?? 0 ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p><span class="emoji">✅</span> CALIFICACIÓN PROMEDIO DE LEADS</p>
+                    <h4><?= number_format($conversionData['calificacionPromedio'] ?? 0, 2) ?>%</h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: <?= $conversionData['calificacionPromedio'] ?? 0 ?>%;" aria-valuenow="<?= $conversionData['calificacionPromedio'] ?? 0 ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Información Detallada</h5>
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-bordered table-striped">
+                            <thead style="position: sticky; top: 0; background-color: #f8f9fa;">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Sucursal</th>
+                                    <th>Empresa</th>
+                                    <th>Estatus</th>
+                                    <th>Línea de Negocio</th>
+                                    <th>Comentarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($leads as $lead): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($lead['fecha']); ?></td>
+                                        <td><?= htmlspecialchars($lead['sucursal']); ?></td>
+                                        <td><?= htmlspecialchars($lead['empresa']); ?></td>
+                                        <td><?= htmlspecialchars($lead['estatus']); ?></td>
+                                        <td><?= htmlspecialchars($lead['linea_negocio']); ?></td>
+                                        <td><?= htmlspecialchars($lead['comentarios']); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const branchCtx = document.getElementById('branchChart').getContext('2d');
+    new Chart(branchCtx, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode(array_keys($branchData)); ?>,
+            datasets: [{
+                label: 'Queretaro',
+                data: <?= json_encode(array_values($branchData)); ?>,
+                backgroundColor: ['#4CAF50', '#FF9800', '#F44336', '#2196F3']
+            }]
+        }
+    });
+
+    const contactCtx = document.getElementById('contactChart').getContext('2d');
+    new Chart(contactCtx, {
+        type: 'pie',
+        data: {
+            labels: <?= json_encode(array_keys($contactData)); ?>,
+            datasets: [{
+                data: <?= json_encode(array_values($contactData)); ?>,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+            }]
+        }
+    });
+</script>
+<?php include('components/footer.php'); ?>

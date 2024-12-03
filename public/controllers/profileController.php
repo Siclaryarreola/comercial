@@ -1,10 +1,5 @@
 <?php
-require_once('../models/profileModel.php'); 
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+require_once('../models/profileModel.php');
 
 class ProfileController
 {
@@ -15,15 +10,15 @@ class ProfileController
         $this->profileModel = new ProfileModel();
     }
 
-    // Obtener los datos del perfil utilizando el email almacenado en sesión.
+    // Obtener los datos del perfil utilizando el ID de usuario almacenado en sesión.
     public function getProfileData()
     {
-        $email = $_SESSION['user']['id'] ?? null;
-        if (!$email) {
+        $userId = $_SESSION['user']['id_usuarios'] ?? null;
+        if (!$userId) {
             throw new Exception("Usuario no autenticado.");
         }
 
-        $profileData = $this->profileModel->getProfileByEmail($email);
+        $profileData = $this->profileModel->getProfileById($userId);
         if (!$profileData) {
             throw new Exception("No se encontraron datos del perfil del usuario.");
         }
@@ -34,7 +29,7 @@ class ProfileController
     // Actualizar la foto de perfil del usuario.
     public function updateProfilePhoto()
     {
-        $userId = $_SESSION['user']['id_user'] ?? null;
+        $userId = $_SESSION['user']['id_usuarios'] ?? null;
 
         if (!$userId || $_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['foto_perfil'])) {
             $_SESSION['error'] = "Solicitud no válida.";

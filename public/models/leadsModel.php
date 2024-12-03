@@ -24,7 +24,7 @@ class LeadModel {
             LEFT JOIN estatusleads e ON l.estatus = e.id_estatus
             LEFT JOIN gerentesleads g ON l.gerente_responsable = g.id_gerente
             LEFT JOIN contactoleads mc ON l.medio_contacto = mc.id_contacto
-            LEFT JOIN sucursales s ON l.id_sucursal = s.id
+            LEFT JOIN sucursales s ON l.id_sucursal = s.id_sucursales
             LEFT JOIN negocioleads n ON l.linea_negocio = n.id_negocio
         ";
 
@@ -57,6 +57,17 @@ class LeadModel {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function completeLead($data) {
+        $query = "
+            UPDATE leads
+            SET cotizacion = ?, archivo = ?, estatus = 'Completado'
+            WHERE id = ?
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("ssi", $data['cotizacion'], $data['archivo'], $data['id']);
+        return $stmt->execute();
+    }
+
     public function getContactos() {
         $query = "SELECT id_contacto, contacto FROM contactoleads";
         $result = $this->db->query($query);
@@ -82,7 +93,7 @@ class LeadModel {
     }
 
     public function getSucursales() {
-        $query = "SELECT id, sucursal FROM sucursales";
+        $query = "SELECT id_sucursales, sucursal FROM sucursales";
         $result = $this->db->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
@@ -91,76 +102,6 @@ class LeadModel {
         $query = "SELECT id_negocio, negocio FROM negocioleads";
         $result = $this->db->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function addLead($data) {
-        $this->db->begin_transaction();
-        try {
-            $queryCliente = "
-                INSERT INTO clientesleads (contacto, correo, telefono, empresa, giro, localidad, sucursal, fechaCreacion, id_usuario)
-                VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)
-            ";
-
-            $stmtCliente = $this->db->prepare($queryCliente);
-            if (!$stmtCliente) {
-                throw new Exception("Error preparando la consulta para insertar en clientesleads: " . $this->db->error);
-            }
-
-            $stmtCliente->bind_param(
-                "sssssssi",
-                $data['contacto'],
-                $data['correo'],
-                $data['telefono'],
-                $data['empresa'],
-                $data['giro'],
-                $data['localidad'],
-                $data['sucursal'],
-                $data['id_usuario']
-            );
-
-            if (!$stmtCliente->execute()) {
-                throw new Exception("Error al insertar en clientesleads: " . $stmtCliente->error);
-            }
-
-            $idCliente = $this->db->insert_id;
-
-            $queryLead = "
-                INSERT INTO leads (id_cliente, id_usuario, medio_contacto, estatus, cotizacion, linea_negocio, notas, archivo, fecha_generacion, periodo, gerente_responsable, id_sucursal)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)
-            ";
-
-            $stmtLead = $this->db->prepare($queryLead);
-            if (!$stmtLead) {
-                throw new Exception("Error preparando la consulta para insertar en leads: " . $this->db->error);
-            }
-
-            $stmtLead->bind_param(
-                "iissssssiii",
-                $idCliente,
-                $data['id_usuario'],
-                $data['medio_contacto'],
-                $data['estatus'],
-                $data['cotizacion'],
-                $data['linea_negocio'],
-                $data['notas'],
-                $data['archivo'],
-                $data['periodo'],
-                $data['gerente_responsable'],
-                $data['sucursal']
-            );
-
-            if (!$stmtLead->execute()) {
-                throw new Exception("Error al insertar en leads: " . $stmtLead->error);
-            }
-
-            $this->db->commit();
-            return true;
-
-        } catch (Exception $e) {
-            $this->db->rollback();
-            error_log($e->getMessage());
-            return false;
-        }
     }
 }
 ?>

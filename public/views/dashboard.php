@@ -3,7 +3,7 @@ $activePage = 'dashboard';
 include('components/header.php');
 
 ?>
-<main class="container mt-4 compact-container">
+<main class="container mt-3 large-container"> <!-- Clase ajustada para un contenedor más grande -->
     <div class="content-wrapper">
         <!-- Imagen -->
         <div class="image-container">
@@ -24,5 +24,3 @@ include('components/header.php');
 </main>
 
 <?php include('components/footer.php'); ?>
-
-
