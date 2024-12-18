@@ -1,0 +1,47 @@
+/* Center modal and set consistent design */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+}
+
+.modal-title {
+    margin: auto;
+}
+
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.tbody-tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.tbody-tr:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
