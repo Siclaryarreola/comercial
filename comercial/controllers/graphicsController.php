@@ -10,8 +10,10 @@ class graphicsController
     }
 
     public function getGeneradoresDemanda() {
-        return $this->graphicsModel->getGeneradoresDemanda();
-    }
+    return $this->graphicsModel->getGeneradoresDemanda();
+}
+
+
 
     public function getSucursales() {
         return $this->graphicsModel->getSucursales();

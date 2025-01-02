@@ -16,7 +16,6 @@ $branchData = $graphicsController->getBranchData();
 $contactData = $graphicsController->getContactData();
 $conversionData = $graphicsController->getConversionLeads();
 
-
 // Datos para gráficos
 $branchDataFormatted = [];
 foreach ($branchData as $branch) {
@@ -33,6 +32,7 @@ foreach ($contactData as $contact) {
     <div class="row align-items-start">
         <!-- Columna Izquierda: Filtros y Gráficas -->
         <div class="col-md-4">
+
             <div class="card mb-3">
                 <div class="card-body p-2">
                     <div class="d-flex align-items-center mb-2" style="gap: 0.5rem;">
@@ -41,6 +41,12 @@ foreach ($contactData as $contact) {
                             <input type="date" id="startDate" class="form-control form-control-sm" style="max-width: 130px;">
                             <input type="date" id="endDate" class="form-control form-control-sm" style="max-width: 130px;">
                         </div>
+                        
+                        <label for="demandGenerator" class="form-label mb-0" style="font-size: 0.875rem;">Generador de Demanda:</label>
+                            <select id="demandGenerator" class="form-select form-select-sm" style="max-width: 200px;">
+                                <option value="">Seleccione...</option>
+                            </select>
+
                         <button class="btn btn-primary btn-sm" id="applyFiltersBtn">Aplicar</button>
                     </div>
                     
@@ -64,9 +70,10 @@ foreach ($contactData as $contact) {
                     
                 <!-- Columna Derecha: Información Detallada -->
                 <div class="col-md-8">
-                    <h1 class="text-center mb-4">Reporte Generación de Demanda 2024</h1>
                     
                 <div class="card shadow-sm p-3 mb-4">
+                    <h1 id="report-title" class="text-center mb-4">Reporte Generación de Demanda</h1>
+
                     <h4 class="text-center text-primary">CONVERSIÓN DE LEADS</h4>
                     <div class="row text-center">
                         
@@ -197,8 +204,39 @@ foreach ($contactData as $contact) {
     window.contactDataFormatted = <?= json_encode($contactDataFormatted) ?>;
 </script>
 <script src="../public/js/graphics.js"></script>
-
 <script src="../public/js/graphics.js"></script>
 
+<script>
+    // Obtener el año actual
+    const currentYear = new Date().getFullYear();
+
+    // Seleccionar el título por su ID
+    const reportTitle = document.getElementById('report-title');
+
+    // Actualizar el contenido del título con el año actual
+    reportTitle.textContent += ` ${currentYear}`;
+</script>
 
 
+<Script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('../controllers/graphicsController.php?method=fetchGeneradoresDemanda')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const demandGeneratorSelect = document.getElementById('demandGenerator');
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id_usuarios;
+                option.textContent = item.nombre;
+                demandGeneratorSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error cargando los generadores de demanda:', error));
+});
+
+</Script>

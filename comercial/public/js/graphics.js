@@ -88,3 +88,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+//Función para filtrar por generador de demanda
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('../controllers/graphicsController.php?method=fetchGeneradoresDemanda')
+        .then(response => response.json())
+        .then(data => {
+            const demandGeneratorSelect = document.getElementById('demandGenerator');
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id_usuarios;
+                option.textContent = item.nombre;
+                demandGeneratorSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error cargando los generadores de demanda:', error));
+});
+

@@ -9,7 +9,7 @@ $dropdownData = $leadsController->getDropdownData();
 $etapasLeads = $leadsController->getEtapasLeads();
 $branchData = $leadsController->getBranchData();
 
-$etapasPosibles = ['Contactado', 'Presentación', 'Interesado', 'Cotización Enviada', 'Cerrado-Ganado', 'Cerrado-Perdido'];
+$etapasPosibles = [  'Contactado','Interesado','No Viable', 'Cerrado-Ganado', 'Cerrado-Perdido'];
 $etapasMap = array_fill_keys($etapasPosibles, 0);
 foreach ($etapasLeads as $etapa) {
     if (isset($etapasMap[$etapa['estatus']])) {
@@ -60,28 +60,10 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <!-- Botón de añadir lead, ahora a la izquierda -->
                             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addLeadModal" style="background-color: #0d850d; border-color: #0d850d;">Añadir Lead</button>
-
                             <h5 style="font-size:1.1rem;">Filtrar Leads</h5>
                 <form method="GET" class="form-inline">
                     <div class="form-group mr-2 mb-2">
-                        <label for="cliente" class="mr-2">Cliente:</label>
-                        <input type="text" name="cliente" id="cliente" class="form-control form-control-sm" placeholder="Nombre del cliente" value="<?= htmlspecialchars($clienteFiltro) ?>">
-                    </div>
-                    <div class="form-group mr-2 mb-2">
-                        <label for="estatus" class="mr-2">Estatus:</label>
-                        <select name="estatus" id="estatus" class="form-control form-control-sm">
-                            <option value="">Todos</option>
-                            <option value="1" <?= $estatusFiltro=='1'?'selected':'' ?>>prospecto</option>
-                            <option value="2" <?= $estatusFiltro=='4'?'selected':'' ?>>Contactado</option>
-                            <option value="3" <?= $estatusFiltro=='3'?'selected':'' ?>>Interesado</option>
-                            <option value="4" <?= $estatusFiltro=='4'?'selected':'' ?>>En Seguimiento</option>
-                            <option value="5" <?= $estatusFiltro=='5'?'selected':'' ?>>Cotización enviada</option>
-                            <option value="6" <?= $estatusFiltro=='6'?'selected':'' ?>>Presentación Realizada</option>
-                            <option value="7" <?= $estatusFiltro=='7'?'selected':'' ?>>No Contesta</option>
-                            <option value="8" <?= $estatusFiltro=='8'?'selected':'' ?>>No Viable</option>
-                            <option value="9" <?= $estatusFiltro=='9'?'selected':'' ?>>Cerrado-Ganado</option>
-                            <option value="10" <?= $estatusFiltro=='10'?'selected':'' ?>>Cerrado-Perdido</option>
-                        </select>
+                        
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
                 </form>
@@ -90,45 +72,88 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                     <!-- Formulario de filtro -->
                 </div>
                 
-                <div class="table-responsive">
-                   <table class="table table-striped table-bordered table-hover" id="leadsTable">
-    <thead>
-        <tr>
-            <th>Nombre del Cliente</th>
-            <th>Nombre del Contacto</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-            <th>Fecha</th>
-            <th>Periodo</th>
-            <th>Gerente</th>
-            <th>Sucursal</th>
-            <th>Medio</th>
-            <th>Estatus</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($leads as $lead): ?>
-            <tr data-id="<?= $lead['id'] ?>">
-                <td class="editable" data-field="empresa"><?= htmlspecialchars($lead['empresa']) ?></td>
-                <td class="editable" data-field="contacto"><?= htmlspecialchars($lead['contacto']) ?></td>
-                <td class="editable" data-field="correo"><?= htmlspecialchars($lead['correo']) ?></td>
-                <td class="editable" data-field="telefono"><?= htmlspecialchars($lead['telefono']) ?></td>
-                <td><?= htmlspecialchars($lead['fecha_generacion']) ?></td>
-                <td class="editable-select" data-field="periodo"><?= htmlspecialchars($lead['periodo']) ?></td>
-                <td class="editable-select" data-field="gerente"><?= htmlspecialchars($lead['gerente']) ?></td>
-                <td class="editable-select" data-field="sucursal"><?= htmlspecialchars($lead['sucursal']) ?></td>
-                <td class="editable-select" data-field="medio_contacto"><?= htmlspecialchars($lead['medio_contacto']) ?></td>
-                <td class="editable-select" data-field="estatus"><?= htmlspecialchars($lead['estatus']) ?></td>
-                <td>
-                    <button class="btn btn-primary btn-sm save-lead-btn">Guardar</button>
-                    <button class="btn btn-info btn-sm view-history-btn" data-id="<?= $lead['id'] ?>" data-toggle="modal" data-target="#historyModal">Historial</button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-
+                       <div class="table-responsive">
+                           <table class="table table-striped table-bordered table-hover" id="leadsTable">
+                                <thead>
+                                      <!-- Tabla de leads -->
+                                    <tr>
+                                        <th>Nombre del Cliente</th>
+                                        <th>Nombre del Contacto</th>
+                                        <th>Correo</th>
+                                        <th>Teléfono</th>
+                                        <th>Fecha</th>
+                                        <th>Periodo</th>
+                                        <th>Gerente</th>
+                                        <th>Sucursal</th>
+                                        <th>Medio</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+            
+                              <!-- Campos editables de la tabla de leads -->
+                            <tbody>
+                                <?php foreach ($leads as $lead): ?>
+                                <tr data-id="<?= $lead['id'] ?>">
+                                    <td class="editable" data-field="empresa"><?= htmlspecialchars($lead['empresa']) ?></td>
+                                    <td class="editable" data-field="contacto"><?= htmlspecialchars($lead['contacto']) ?></td>
+                                    <td class="editable" data-field="correo"><?= htmlspecialchars($lead['correo']) ?></td>
+                                    <td class="editable" data-field="telefono"><?= htmlspecialchars($lead['telefono']) ?></td>
+                                    <td><?= htmlspecialchars($lead['fecha_generacion']) ?></td>
+                                    
+                                    <!-- listas  editables de la tabla de leads -->
+                                    <td class="editable-select" data-field="periodo">
+                                        <select class="form-control">
+                                            <?php foreach ($dropdownData['periodos'] as $periodo): ?>
+                                            <option value="<?= $periodo['id_periodo'] ?>" <?= $lead['periodo'] == $periodo['id_periodo'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($periodo['periodo']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                         </select>
+                                    </td>
+                                    <td class="editable-select" data-field="gerente_responsable">
+                                        <select class="form-control" <?= !empty($lead['gerente_responsable']) ? 'disabled' : '' ?>>
+                                            <?php foreach ($dropdownData['gerentes'] as $gerente): ?>
+                                            <option value="<?= $gerente['id_gerente'] ?>" <?= $lead['gerente_responsable'] == $gerente['id_gerente'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($gerente['gerente']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td class="editable-select" data-field="sucursal">
+                                        <select class="form-control">
+                                            <?php foreach ($dropdownData['sucursales'] as $sucursal): ?>
+                                            <option value="<?= $sucursal['id_sucursales'] ?>" <?= $lead['sucursal'] == $sucursal['id_sucursales'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($sucursal['sucursal']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td class="editable-select" data-field="medio_contacto">
+                                        <select class="form-control">
+                                                    <?php foreach ($dropdownData['contactos'] as $contacto): ?>
+                                                        <option value="<?= $contacto['id_contacto'] ?>" <?= $lead['medio_contacto'] == $contacto['id_contacto'] ? 'selected' : '' ?>>
+                                                            <?= htmlspecialchars($contacto['contacto']) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td class="editable-select" data-field="estatus">
+                                        <select class="form-control">
+                                            <?php foreach ($dropdownData['estatus'] as $estatus): ?>
+                                            <option value="<?= $estatus['id_estatus'] ?>" <?= $lead['estatus'] == $estatus['estatus'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($estatus['estatus']) ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm save-lead-btn">Guardar</button>
+                                        <button class="btn btn-info btn-sm view-history-btn" data-id="<?= $lead['id'] ?>" data-toggle="modal" data-target="#historyModal">Historial</button>
+                                    </td>
+                                </tr> <?php endforeach; ?>
+                            </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -148,7 +173,9 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                 </button>
             </div>
             <div class="modal-body bg-light">
-                <form id="addLeadForm" method="POST">
+                
+                <form id="addLeadForm" method="POST" action="../controllers/leadsController.php?action=addLead">
+
                     <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
@@ -187,7 +214,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sucursal">Sucursal</label>
-                                    <select class="form-control" id="sucursal" name="sucursal" required>
+                                    <select class="form-control" id="sucursal" name="sucursal" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['sucursales'] ?? [] as $sucursal): ?>
                                             <option value="<?= $sucursal['id_sucursales'] ?>"><?= htmlspecialchars($sucursal['sucursal']) ?></option>
@@ -196,7 +223,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                                 </div>
                                 <div class="form-group">
                                     <label for="gerente_responsable">Gerente Responsable</label>
-                                    <select class="form-control" id="gerente_responsable" name="gerente_responsable" required>
+                                    <select class="form-control" id="gerente_responsable" name="gerente_responsable" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['gerentes'] ?? [] as $gerente): ?>
                                             <option value="<?= $gerente['id_gerente'] ?>"><?= htmlspecialchars($gerente['gerente']) ?></option>
@@ -205,7 +232,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                                 </div>
                                 <div class="form-group">
                                     <label for="medio_contacto">Medio de Contacto</label>
-                                    <select class="form-control" id="medio_contacto" name="medio_contacto" required>
+                                    <select class="form-control" id="medio_contacto" name="medio_contacto" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['contactos'] ?? [] as $contacto): ?>
                                             <option value="<?= $contacto['id_contacto'] ?>"><?= htmlspecialchars($contacto['contacto']) ?></option>
@@ -214,7 +241,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                                 </div>
                                 <div class="form-group">
                                     <label for="linea_negocio">Línea de Negocio</label>
-                                    <select class="form-control" id="linea_negocio" name="linea_negocio" required>
+                                    <select class="form-control" id="linea_negocio" name="linea_negocio" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['negocios'] ?? [] as $negocio): ?>
                                             <option value="<?= $negocio['id_negocio'] ?>"><?= htmlspecialchars($negocio['negocio']) ?></option>
@@ -224,7 +251,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                                 
                                 <div class="form-group">
                                     <label for="estatus">Estatus</label>
-                                    <select class="form-control" id="estatus" name="estatus" required>
+                                    <select class="form-control" id="estatus" name="estatus" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['estatus'] ?? [] as $estatus): ?>
                                             <option value="<?= $estatus['id_estatus'] ?>"><?= htmlspecialchars($estatus['estatus']) ?></option>
@@ -234,7 +261,7 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
                                 
                                 <div class="form-group">
                                     <label for="periodo">Periodo</label>
-                                    <select class="form-control" id="periodo" name="periodo" required>
+                                    <select class="form-control" id="periodo" name="periodo" >
                                         <option value="">Seleccionar</option>
                                         <?php foreach ($dropdownData['periodos'] ?? [] as $periodo): ?>
                                             <option value="<?= $periodo['id_periodo'] ?>"><?= htmlspecialchars($periodo['periodo']) ?></option>
@@ -262,7 +289,9 @@ $usuarioRol = $_SESSION['user']['rol'] ?? null;
 <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 <script>
     var etapasMap = <?= json_encode($etapasMap) ?>;
+    const dropdownData = <?= json_encode($dropdownData) ?>;
 </script>
+
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 <script src="../public/js/leads.js"></script>
 <?php include('components/footer.php'); ?>
